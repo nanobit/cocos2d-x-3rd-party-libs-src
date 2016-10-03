@@ -18,8 +18,6 @@ ifdef HAVE_TIZEN
 EX_ECFLAGS = -fPIC
 endif
 
-echo $(PREFIX)
-
 DEPS_websockets = zlib $(DEPS_zlib)
 
 DEPS_websockets = openssl $(DEPS_openssl)
@@ -31,6 +29,8 @@ endif
 .websockets: websockets .zlib .openssl toolchain.cmake
 	cd $< && $(HOSTVARS) CFLAGS="$(CFLAGS) $(EX_ECFLAGS)" $(CMAKE) \
 	-DLWS_WITH_SSL=1 \
+	-DLWS_OPENSSL_INCLUDE_DIRS=$(PREFIX)/include/openssl/\
+	-DLWS_OPENSSL_LIBRARIES="$(PREFIX)/lib/libssl.a;$(PREFIX)/lib/libcrypto.a"\
 	-DLWS_WITHOUT_SERVER=1 \
 	-DLWS_WITHOUT_TEST_SERVER=1 \
 	-DLWS_WITHOUT_TEST_SERVER_EXTPOLL=1 \
